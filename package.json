@@ -1,0 +1,41 @@
+{
+  "name": "tfjs-pose-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build-dev": "webpack --config webpack.dev.js",
+    "build-prod": "webpack --config webpack.prod.js",
+    "start-dev": "webpack serve --config webpack.dev.js",
+    "start-prod": "webpack serve --config webpack.prod.js",
+    "tw-serve-dev": "npx tailwindcss -i ./src/input.css -o ./public/output.css --watch",
+    "tw-build-prod": "npx tailwindcss -i ./src/input.css -o ./public/output.css --minify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reevald/tfjs-pose-test.git"
+  },
+  "author": "Moch. Galang Rivaldo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/reevald/tfjs-pose-test/issues"
+  },
+  "homepage": "https://github.com/reevald/tfjs-pose-test#readme",
+  "devDependencies": {
+    "html-webpack-plugin": "^5.5.0",
+    "tailwindcss": "^3.2.4",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.11.1",
+    "webpack-merge": "^5.8.0"
+  },
+  "dependencies": {
+    "@mediapipe/pose": "^0.5.1635988162",
+    "@tensorflow-models/pose-detection": "^2.0.0",
+    "@tensorflow/tfjs-backend-webgl": "^4.2.0",
+    "@tensorflow/tfjs-converter": "^4.2.0",
+    "@tensorflow/tfjs-core": "^4.2.0",
+    "@tensorflow/tfjs-layers": "^4.2.0"
+  }
+}

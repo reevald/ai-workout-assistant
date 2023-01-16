@@ -36,6 +36,7 @@
     "@tensorflow/tfjs-backend-webgl": "^4.2.0",
     "@tensorflow/tfjs-converter": "^4.2.0",
     "@tensorflow/tfjs-core": "^4.2.0",
-    "@tensorflow/tfjs-layers": "^4.2.0"
+    "@tensorflow/tfjs-layers": "^4.2.0",
+    "webcam-easy": "^1.0.5"
   }
 }

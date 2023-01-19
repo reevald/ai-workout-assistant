@@ -1,5 +1,5 @@
 {
-  "name": "tfjs-pose-test",
+  "name": "ai-workout-assistant",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,19 +9,19 @@
     "build-prod": "webpack --config webpack.prod.js",
     "start-dev": "webpack serve --config webpack.dev.js",
     "start-prod": "webpack serve --config webpack.prod.js",
-    "tw-serve-dev": "npx tailwindcss -i ./src/input.css -o ./public/output.css --watch",
-    "tw-build-prod": "npx tailwindcss -i ./src/input.css -o ./public/output.css --minify"
+    "tw-serve-dev": "npx tailwindcss -i ./src/input.css -o ./public/stylesheets/output.css --watch",
+    "tw-build-prod": "npx tailwindcss -i ./src/input.css -o ./public/stylesheets/output.css --minify"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reevald/tfjs-pose-test.git"
+    "url": "git+https://github.com/reevald/ai-workout-assistant.git"
   },
   "author": "Moch. Galang Rivaldo",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/reevald/tfjs-pose-test/issues"
+    "url": "https://github.com/reevald/ai-workout-assistant/issues"
   },
-  "homepage": "https://github.com/reevald/tfjs-pose-test#readme",
+  "homepage": "https://github.com/reevald/ai-workout-assistant#readme",
   "devDependencies": {
     "eslint": "^8.32.0",
     "eslint-config-airbnb-base": "^15.0.0",

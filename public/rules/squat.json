@@ -1,0 +1,62 @@
+{
+  "poseDetectorConfig": {
+    "model": "MoveNet",
+    "detectorConfig": {},
+    "estimationConfig": {}
+  },
+  "classifierConfig": {
+    "path": "./tfjs-model/squat/model.json",
+    "label": ["Other", "Squat"],
+    "stdConfig": {
+      "width": 640,
+      "height": 360
+    }
+  },
+  "rulesCountConfig": {
+    "nameWorkout": "Squat",
+    "nameStage": ["Up", "Down"],
+    "anglePoint": {
+      "0": {},
+      "1": {},
+      "2": {},
+      "3": {},
+      "4": {},
+      "5": {},
+      "6": {},
+      "7": {},
+      "8": {},
+      "9": {},
+      "10": {},
+      "11": {
+        "spouseIdx": [13, 5],
+        "rangeAngle": [
+          { "min": 140, "max": 180 },
+          { "min": 0, "max": 130 }
+        ]
+      },
+      "12": {
+        "spouseIdx": [14, 6],
+        "rangeAngle": [
+          { "min": 140, "max": 180 },
+          { "min": 0, "max": 130 }
+        ]
+      },
+      "13": {
+        "spouseIdx": [11, 15],
+        "rangeAngle": [
+          { "min": 150, "max": 180 },
+          { "min": 0, "max": 140 }
+        ]
+      },
+      "14": {
+        "spouseIdx": [12, 16],
+        "rangeAngle": [
+          { "min": 150, "max": 180 },
+          { "min": 0, "max": 180 }
+        ]
+      },
+      "15": {},
+      "16": {}
+    }
+  }
+}

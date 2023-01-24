@@ -1,12 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TFJS Pose Test</title>
-</head>
-<body>
-  <video id="webcam" autoplay muted width="640" height="480"></video>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./stylesheets/output.css" />
+    <title>TFJS Pose Test</title>
+  </head>
+  <body>
+    <button id="accessCamBtn" class="bg-blue-200">Access Camera</button>
+    <button id="resumeBtn" class="bg-blue-200">Resume</button>
+    <button id="pauseBtn" class="bg-blue-200">Pause</button>
+    <button id="dataBtn" class="bg-blue-200">Extract Keypoints</button>
+    <div class="bg-blue-400 relative">
+      <video id="webcam" muted width="640" height="360"></video>
+      <canvas id="cnvPose" class="absolute inset-0" width="640" height="360"></canvas>
+    </div>
+    <!-- Control Deck -->
+    <div class="w-full max-w-2xl bg-purple-200 h-96">
+      <div id="loaderBox">Loading...</div>
+      <h1 class="bg-purple-300">Observe</h1>
+      <div class="flex flex-row w-full">
+        <div class="w-1/2">
+          <div id="fpsBox"></div>
+          <div id="classBox"></div>
+        </div>
+        <div class="w-1/2">
+          <div id="countBox"></div>
+          <div id="stageBox"></div>
+          <div id="adviceBox"></div>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>

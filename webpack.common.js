@@ -1,11 +1,12 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+/* eslint-disable import/no-extraneous-dependencies */
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: './src/index.js',
+  entry: "./src/index.js",
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/template.html',
-      filename: 'index.html',
+      template: "./src/template.html",
+      filename: "index.html",
     }),
   ],
   devServer: {

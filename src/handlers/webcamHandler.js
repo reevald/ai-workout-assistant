@@ -9,7 +9,7 @@
 export default class WebcamHandler {
   constructor(
     webcamElement,
-    facingMode = "environment" // environment or user
+    facingMode = "user" // enviroment or user
   ) {
     this._webcamElement = webcamElement;
     this._addVideoConfig = {
@@ -91,9 +91,15 @@ export default class WebcamHandler {
   }
 
   /* Change Facing mode and selected camera */
-  flip() {
-    this._facingMode = this._facingMode === "user" ? "enviroment" : "user";
-    this._webcamElement.style.transform = "";
+  flip(mode) {
+    // this._facingMode = this._facingMode === "user" ? "enviroment" : "user";
+    this._facingMode = mode;
+    // this._webcamElement.style.transform = "";
+    if (this._facingMode === "user") {
+      this._webcamElement.style.transform = "scale(-1,1)";
+    } else {
+      this._webcamElement.style.transform = "";
+    }
     this.selectCamera();
   }
 

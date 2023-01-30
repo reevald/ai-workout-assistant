@@ -31,7 +31,6 @@ export default class ClassifierHandler {
       class: this.label[idx],
       confidence: value,
     }));
-    outputData.sort((a, b) => b.confidence - a.confidence);
-    return outputData[0];
+    return outputData;
   };
 }

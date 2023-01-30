@@ -82,26 +82,32 @@ export default class CounterHandler {
   getAdvice = () => {
     if (this.currStage.statusStage === "FULL") {
       if (this.currStage.nameStage === "None") {
-        // First of all (nameStage[0] on this.rules)
-        return `Please Move to "${this.rules.nameStage[0]}"`;
+        return "";
       }
-      return "<li>Good Job!</li>";
+      return `<b>Good job!</b> You have moved ${this.currStage.nameStage}, then move ${this.nextStage.nameStage}`;
     }
     // For partial (statusStage)
     // If nameStage "None"
     if (this.currStage.nameStage === "None") {
-      if (Object.keys(this.lastStage).length === 0) {
-        return `Please Move to "${this.rules.nameStage[0]}"`;
-      }
-      return `Please Move to "${this.nextStage.nameStage}"`;
+      return `Your last move is ${this.lastStage.nameStage}! Please move to ${this.nextStage.nameStage}`;
     }
     let advice = "";
+    let counter = 1;
     this.obsStages.forEach((stage) => {
       if (stage.nameStage !== this.currStage.nameStage) {
         stage.detail.forEach((dataAngle, idxAngle) => {
           if (idxAngle === this.rules.nameStage.length) return;
+          if (counter === 1) {
+            advice += `<p>To move ${this.nextStage.nameStage} :</p>`;
+          }
           const { rangeAngle } = this.rules.anglePoint[dataAngle[0]];
-          advice += `<li>${dataAngle[1]} (id: ${dataAngle[0]}) must in range [${rangeAngle[idxAngle].min}, ${rangeAngle[idxAngle].max}] to move "${this.nextStage.nameStage}"</li>`;
+          advice += `<p>${counter}) Angle <b>${dataAngle[1]
+            .split("_")
+            .map((name) => name.charAt(0).toUpperCase() + name.substr(1))
+            .join(" ")}</b> must between ${rangeAngle[idxAngle].min}° and ${
+            rangeAngle[idxAngle].max
+          }°</li>`;
+          counter += 1;
         });
       }
     });

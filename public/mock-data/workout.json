@@ -1,0 +1,14 @@
+{
+  "nameWorkout": ["Push Up", "Squat"],
+  "slugWorkout": ["push-up", "squat"],
+  "duration": ["1 Minutes", "3 Minutes", "5 Minutes", "7 Minutes"],
+  "settingsConfig": {
+    "currWorkout": "None",
+    "currDuration": "None",
+    "isFullscreen": false,
+    "isFlipCamera": false,
+    "isDirectionSign": true,
+    "isDeveloperMode": false,
+    "isAccessCamera": false
+  }
+}

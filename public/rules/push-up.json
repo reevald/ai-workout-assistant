@@ -15,14 +15,8 @@
   "rulesCountConfig": {
     "nameWorkout": "Push Up",
     "nameStage": ["Down", "Up"],
+    "pathImageStage": ["./img/iconmonstr-caret-down-circle-filled-64.png", "./img/iconmonstr-caret-up-circle-filled-64.png"],
     "anglePoint": {
-      "0": {},
-      "1": {},
-      "2": {},
-      "3": {},
-      "4": {},
-      "5": {},
-      "6": {},
       "7": {
         "spouseIdx": [9, 5],
         "rangeAngle": [
@@ -37,10 +31,6 @@
           { "min": 150, "max": 180 }
         ]
       },
-      "9": {},
-      "10": {},
-      "11": {},
-      "12": {},
       "13": {
         "spouseIdx": [11, 15],
         "rangeAngle": [
@@ -54,9 +44,7 @@
           { "min": 150, "max": 180 },
           { "min": 150, "max": 180 }
         ]
-      },
-      "15": {},
-      "16": {}
+      }
     }
   }
 }

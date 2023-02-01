@@ -1,0 +1,166 @@
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 42px;
+    height: 24px;
+  }
+
+  .switch.dev-switch {
+    margin-left: 5px;
+    width: 22px;
+    height: 12px;
+  }
+
+  /* Hide default HTML checkbox */
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  /* The slider */
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
+  }
+  .dev-slider.slider:before {
+    height: 8px;
+    width: 8px;
+    left: 3px;
+    bottom: 2px;
+  }
+
+  input:checked + .slider {
+    background-color: #fbbf24;
+  }
+
+  input:focus + .slider {
+    box-shadow: 0 0 1px #fbbf24;
+  }
+
+  input:checked + .slider:before {
+    -webkit-transform: translateX(18px);
+    -ms-transform: translateX(18px);
+    transform: translateX(18px);
+  }
+
+  input:checked + .dev-slider.slider:before {
+    -webkit-transform: translateX(8px);
+    -ms-transform: translateX(8px);
+    transform: translateX(8px);
+  }
+
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+
+  .slider.round:before {
+    border-radius: 50%;
+  }
+  /* Ref: https://stackoverflow.com/a/61843342 */
+  #progressBarBox {
+    background: transparent;
+    width: 30px;
+    height: 100%;
+    border-radius: 50px;
+    overflow: hidden;
+    position: relative;
+  }
+  #confidenceBox {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: linear-gradient(0deg, #ff1076, orange, yellow, #70dc23);
+    -webkit-clip-path: inset(100% 0 0 0);
+    clip-path: inset(100% 0 0 0);
+  }
+  .loader {
+    animation: rotate 1s infinite;
+    height: 50px;
+    width: 50px;
+  }
+
+  .loader:before,
+  .loader:after {
+    border-radius: 50%;
+    content: "";
+    display: block;
+    height: 20px;
+    width: 20px;
+  }
+  .loader:before {
+    animation: ball1 1s infinite;
+    background-color: #fff;
+    box-shadow: 30px 0 0 #fbbf24;
+    margin-bottom: 10px;
+  }
+  .loader:after {
+    animation: ball2 1s infinite;
+    background-color: #fbbf24;
+    box-shadow: 30px 0 0 #fff;
+  }
+
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg) scale(0.8);
+    }
+    50% {
+      transform: rotate(360deg) scale(1.2);
+    }
+    100% {
+      transform: rotate(720deg) scale(0.8);
+    }
+  }
+
+  @keyframes ball1 {
+    0% {
+      box-shadow: 30px 0 0 #fbbf24;
+    }
+    50% {
+      box-shadow: 0 0 0 #fbbf24;
+      margin-bottom: 0;
+      transform: translate(15px, 15px);
+    }
+    100% {
+      box-shadow: 30px 0 0 #fbbf24;
+      margin-bottom: 10px;
+    }
+  }
+
+  @keyframes ball2 {
+    0% {
+      box-shadow: 30px 0 0 #fff;
+    }
+    50% {
+      box-shadow: 0 0 0 #fff;
+      margin-top: -20px;
+      transform: translate(15px, 15px);
+    }
+    100% {
+      box-shadow: 30px 0 0 #fff;
+      margin-top: 0;
+    }
+  }

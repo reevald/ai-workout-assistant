@@ -15,18 +15,8 @@
   "rulesCountConfig": {
     "nameWorkout": "Squat",
     "nameStage": ["Up", "Down"],
+    "pathImageStage": ["./img/iconmonstr-caret-up-circle-filled-64.png", "./img/iconmonstr-caret-down-circle-filled-64.png"],
     "anglePoint": {
-      "0": {},
-      "1": {},
-      "2": {},
-      "3": {},
-      "4": {},
-      "5": {},
-      "6": {},
-      "7": {},
-      "8": {},
-      "9": {},
-      "10": {},
       "11": {
         "spouseIdx": [13, 5],
         "rangeAngle": [
@@ -52,11 +42,9 @@
         "spouseIdx": [12, 16],
         "rangeAngle": [
           { "min": 150, "max": 180 },
-          { "min": 0, "max": 180 }
+          { "min": 0, "max": 140 }
         ]
-      },
-      "15": {},
-      "16": {}
+      }
     }
   }
 }

@@ -20,14 +20,14 @@ export default class CounterHandler {
         idStage: idx,
         nameStage: stage,
         sum: 0,
-        detail: [],
+        detail: {},
       });
     });
     this.obsStages.push({
       idStage: -1,
       nameStage: "None",
       sum: 0,
-      detail: [],
+      detail: {},
     }); // Last stage (other);
   };
 
@@ -42,13 +42,14 @@ export default class CounterHandler {
 
   determineCurrStage = () => {
     if (this.obsStages.length !== 0) {
-      this.obsStages.sort((a, b) => b.sum - a.sum);
+      // Sort Observation Stages by sum / number of anglepoint each stage
+      const sortObsStages = [...this.obsStages].sort((a, b) => b.sum - a.sum);
       const statusStage =
-        this.obsStages[0].sum === this.sumObsPoints ? "FULL" : "PARTIAL";
+        sortObsStages[0].sum === this.sumObsPoints ? "FULL" : "PARTIAL";
       this.currStage = {
         statusStage,
-        idStage: this.obsStages[0].idStage,
-        nameStage: this.obsStages[0].nameStage,
+        idStage: sortObsStages[0].idStage,
+        nameStage: sortObsStages[0].nameStage,
       };
       if (
         statusStage === "FULL" &&
@@ -59,13 +60,13 @@ export default class CounterHandler {
       }
       if (
         statusStage === "FULL" &&
-        this.obsStages[0].nameStage !== "None" &&
+        sortObsStages[0].nameStage !== "None" &&
         (Object.keys(this.lastStage).length === 0 ||
-          this.lastStage.nameStage !== this.obsStages[0].nameStage)
+          this.lastStage.nameStage !== sortObsStages[0].nameStage)
       ) {
         this.lastStage = {
-          idStage: this.obsStages[0].idStage,
-          nameStage: this.obsStages[0].nameStage,
+          idStage: sortObsStages[0].idStage,
+          nameStage: sortObsStages[0].nameStage,
         };
         const nextIdStage =
           this.lastStage.idStage + 1 !== this.rules.nameStage.length
@@ -80,36 +81,32 @@ export default class CounterHandler {
   };
 
   getAdvice = () => {
-    if (this.currStage.statusStage === "FULL") {
-      if (this.currStage.nameStage === "None") {
-        return "";
-      }
-      return `<b>Good job!</b> You have moved ${this.currStage.nameStage}, then move ${this.nextStage.nameStage}`;
-    }
-    // For partial (statusStage)
-    // If nameStage "None"
-    if (this.currStage.nameStage === "None") {
-      return `Your last move is ${this.lastStage.nameStage}! Please move to ${this.nextStage.nameStage}`;
-    }
+    if (Object.keys(this.nextStage).length === 0) return "";
     let advice = "";
     let counter = 1;
+
+    const listIdxTrueAngle = this.obsStages[this.nextStage.idStage].detail;
+
     this.obsStages.forEach((stage) => {
-      if (stage.nameStage !== this.currStage.nameStage) {
-        stage.detail.forEach((dataAngle, idxAngle) => {
-          if (idxAngle === this.rules.nameStage.length) return;
-          if (counter === 1) {
-            advice += `<p>To move ${this.nextStage.nameStage} :</p>`;
-          }
-          const { rangeAngle } = this.rules.anglePoint[dataAngle[0]];
-          advice += `<p>${counter}) Angle <b>${dataAngle[1]
-            .split("_")
-            .map((name) => name.charAt(0).toUpperCase() + name.substr(1))
-            .join(" ")}</b> must between ${rangeAngle[idxAngle].min}° and ${
-            rangeAngle[idxAngle].max
-          }°</li>`;
-          counter += 1;
-        });
-      }
+      if (stage.nameStage === this.nextStage.nameStage) return;
+      Object.keys(stage.detail).forEach((idKeypoint) => {
+        if (idKeypoint in listIdxTrueAngle) return;
+
+        if (counter === 1) {
+          advice += `<p>To move ${this.nextStage.nameStage} :</p>`;
+        }
+
+        const { rangeAngle } = this.rules.anglePoint[idKeypoint];
+
+        advice += `<p>${counter}) Angle <b>${stage.detail[idKeypoint].name
+          .split("_")
+          .map((name) => name.charAt(0).toUpperCase() + name.substr(1))
+          .join(" ")}</b> (${stage.detail[idKeypoint].angle}°) must between ${
+          rangeAngle[this.nextStage.idStage].min
+        }° and ${rangeAngle[this.nextStage.idStage].max}°</p>`;
+
+        counter += 1;
+      });
     });
     return advice;
   };
@@ -117,7 +114,7 @@ export default class CounterHandler {
   detectAnglesAndStages = (keypoints, classPredict) => {
     if (this.rules && this.ctxPose && classPredict === this.rules.nameWorkout) {
       keypoints.forEach((oriPoint, idx) => {
-        if (Object.keys(this.rules.anglePoint[idx]).length === 0) return;
+        if (!(idx in this.rules.anglePoint)) return;
         const { spouseIdx, rangeAngle } = this.rules.anglePoint[idx];
         const spousePointA = keypoints[spouseIdx[0]];
         const spousePointB = keypoints[spouseIdx[1]];
@@ -158,16 +155,19 @@ export default class CounterHandler {
         rangeAngle.forEach((range, idStage) => {
           if (degAngle >= range.min && degAngle <= range.max) {
             this.obsStages[idStage].sum += 1;
-            this.obsStages[idStage].detail.push([idx, keypoints[idx].name]);
+            this.obsStages[idStage].detail[idx] = {
+              name: keypoints[idx].name,
+              angle: degAngle,
+            };
             isStageNone = false;
           }
         });
         if (isStageNone) {
           this.obsStages[this.obsStages.length - 1].sum += 1;
-          this.obsStages[this.obsStages.length - 1].detail.push([
-            idx,
-            keypoints[idx].name,
-          ]);
+          this.obsStages[this.obsStages.length - 1].detail[idx] = {
+            name: keypoints[idx].name,
+            angle: degAngle,
+          };
         }
       });
       this.determineCurrStage();

@@ -5,12 +5,19 @@ import * as poseDetection from "@tensorflow-models/pose-detection";
 import DatasetHandler from "./datasetHandler";
 import ClassifierHandler from "./classifierHandler";
 import CounterHandler from "./counterHandler";
+import WebcamHandler from "./webcamHandler";
 
 export default class PoseHandler {
   constructor(webcamElem, cnvPoseElem) {
     // Dataset handler
     this.DBHandler = new DatasetHandler();
     this.isExtractKeypoints = false;
+
+    // Camera Handler
+    this.camHandler = new WebcamHandler(webcamElem);
+    this.isVideoMode = false;
+    this.scaler = null;
+
     // Model Handler
     this.classifier = new ClassifierHandler();
     this.isClassify = true;
@@ -71,10 +78,13 @@ export default class PoseHandler {
     };
     // Counter handler
     this.counter = new CounterHandler(this.ctxPose);
+    this.isShowAdvice = false;
+    this.isShowDirectionSign = true;
   }
 
   setup = async (poseDetectorConfig) => {
     this.estimationConfig = poseDetectorConfig.estimationConfig;
+    // Prevent double setup for same configuration
     if (
       this.nameModel === poseDetectorConfig.model &&
       JSON.stringify(this.detectorConfig) ===
@@ -102,7 +112,18 @@ export default class PoseHandler {
       this.cnvPoseElem.height
     );
     // Draw Angle:
+    this.ctxPose.save();
     this.ctxPose.beginPath();
+    // For handle flipping (horizontal)
+    // eslint-disable-next-line no-underscore-dangle
+    if (this.camHandler._facingMode === "user") {
+      this.ctxPose.translate(this.cnvPoseElem.width, 0);
+      this.ctxPose.scale(-1, 1);
+    }
+    // For handle scale when change resolution of screen
+    if (this.scaler) {
+      this.ctxPose.scale(this.scaler.w, this.scaler.h);
+    }
     this.ctxPose.fillStyle = "#eab308";
     this.counter.initStage();
     this.counter.detectAnglesAndStages(keypoints, this.currClass);
@@ -135,31 +156,35 @@ export default class PoseHandler {
     this.ctxPose.stroke();
     this.ctxPose.fill();
     this.ctxPose.strokeStyle = "white";
+    // Show number of angle in here, to overdraw previous skeleton & angles
     this.counter.listAngles.forEach((dataAngle) => {
       this.ctxPose.strokeText(`${dataAngle[0]}°`, dataAngle[1], dataAngle[2]);
     });
     this.counter.listAngles = [];
+    this.ctxPose.restore();
     return xyPoints;
   };
 
   drawPose = () => {
     this.getPose().then((pose) => {
-      if (pose.length !== 0) {
-        // console.log(this.DBHandler.DBKeypoints);
+      if (pose && pose.length !== 0) {
         const xyPoints = this.drawSkeleton(pose[0].keypoints);
         if (
           xyPoints &&
           this.isClassify &&
-          this.additionalElem.classElem &&
+          this.additionalElem.confidenceElem &&
           this.frame % this.frameClassify === 0
         ) {
           this.classifier.predict(xyPoints).then((result) => {
-            this.currClass = result.class;
-            this.additionalElem.classElem.innerHTML = `
-              <h1>Classifier run each: ${this.frameClassify} Frame</li> 
-              <li>Class: ${result.class}</li>
-              <li>Confidence: ${result.confidence}</li>
-            `;
+            // Case: 2 classes (workout & non-workout)
+            this.currClass =
+              result[0].confidence > result[1].confidence
+                ? result[0].class
+                : result[1].class;
+            // Render confidence predict class with progress bar
+            this.additionalElem.confidenceElem.style.clipPath = `inset(${
+              (1 - result[1].confidence.toFixed(6)) * 100
+            }% 0 0 0)`;
           });
         }
       }
@@ -167,40 +192,48 @@ export default class PoseHandler {
       if (this.isClassify) {
         // Show counter
         if (this.additionalElem.countElem) {
-          this.additionalElem.countElem.innerHTML = `
-            <li>Count: ${this.counter.count}</li>`;
+          this.additionalElem.countElem.innerText = this.counter.count;
         }
-        // Show stages
-        if (this.additionalElem.stageElem) {
-          this.additionalElem.stageElem.innerHTML = `
-            <li>Last Stage: ${this.counter.lastStage.nameStage}</li>
-            <li>Next Stage: ${this.counter.nextStage.nameStage}</li>
-            <li>Current Stage: ${this.counter.currStage.nameStage}</li>
-            <li>Status Current Stage: ${this.counter.currStage.statusStage}</li>`;
+        // Show directionSign
+        if (
+          this.isShowDirectionSign &&
+          this.additionalElem.imgDirectionSignElem &&
+          Object.keys(this.counter.nextStage).length !== 0
+        ) {
+          this.additionalElem.imgDirectionSignElem.style.display = this.counter
+            .nextStage.nameStage
+            ? "block"
+            : "none";
+          this.additionalElem.imgDirectionSignElem.src =
+            this.counter.rules.pathImageStage[this.counter.nextStage.idStage];
         }
         // Show advices
-        if (
-          this.additionalElem.adviceElem &&
-          this.frame % this.frameClassify === 0
-        ) {
-          this.additionalElem.adviceElem.innerHTML = `
-            <h1>Advice run each: ${this.frameClassify} Frame</h1>
-            ${this.counter.getAdvice()}
-          `;
+        if (this.isShowAdvice && this.additionalElem.adviceWrapElem) {
+          const adviceHTML = this.counter.getAdvice();
+          this.additionalElem.adviceWrapElem.style.display = adviceHTML
+            ? "flex"
+            : "none";
+          this.additionalElem.adviceWrapElem.children[0].innerText =
+            "Advice each frame";
+          this.additionalElem.adviceWrapElem.children[1].innerHTML = adviceHTML;
         }
       }
-      // console.log(pose[0].keypoints);
+
       if (this.isLoop) {
         window.requestAnimationFrame(this.drawPose);
       }
+
       if (this.additionalElem.fpsElem) {
         const now = performance.now();
         while (this.times.length > 0 && this.times[0] <= now - 1000) {
           this.times.shift();
         }
         this.times.push(now);
-        this.fps = this.times.length;
+        this.fps = this.times.length - 1;
         this.frame += 1;
+        // This is to optimize how many times tfjs model will be predict
+        // each 1 seconds. For example when fps 60, the model will be
+        // predict each 60 / 10 = 6 frame.
         if (this.fps < 15) {
           this.frameClassify = Math.ceil(this.fps / 3); // prevent 0
         } else if (this.fps >= 15 && this.fps < 30) {
@@ -210,9 +243,7 @@ export default class PoseHandler {
         } else {
           this.frameClassify = Math.floor(this.fps / 10);
         }
-        this.additionalElem.fpsElem.innerHTML = `
-          <li>FPS: ${this.fps}</li>
-        `;
+        this.additionalElem.fpsElem.innerText = `FPS: ${this.fps}`;
       }
     });
   };

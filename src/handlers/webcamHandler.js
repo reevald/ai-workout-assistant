@@ -12,10 +12,7 @@ export default class WebcamHandler {
     facingMode = "user" // enviroment or user
   ) {
     this._webcamElement = webcamElement;
-    this._addVideoConfig = {
-      width: 640,
-      height: 360,
-    };
+    this._addVideoConfig = {};
     this._facingMode = facingMode;
     this._webcamList = [];
     this._streamList = [];

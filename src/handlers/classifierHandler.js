@@ -6,12 +6,12 @@ export default class ClassifierHandler {
   constructor() {
     this.model = null;
     this.label = [];
-    this.stdConfig = {};
+    this.stdConfig = null;
   }
 
-  setup = async (classifierConfig) => {
+  setup = async (classifierConfig, stdConfig) => {
     this.label = classifierConfig.label;
-    this.stdConfig = classifierConfig.stdConfig;
+    this.stdConfig = stdConfig;
     this.model = await loadLayersModel(classifierConfig.path);
   };
 
@@ -25,7 +25,7 @@ export default class ClassifierHandler {
     });
 
   predict = async (stdData) => {
-    if (!this.model) return null;
+    if (!this.model && !this.stdConfig) return null;
     const inputData = tensor([this.standarization(stdData)]);
     const result = await this.model.predict(inputData).data();
     // Enrich output predict

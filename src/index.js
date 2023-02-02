@@ -88,6 +88,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     imgDirectionSignElem,
   };
 
+  // eslint-disable-next-line no-underscore-dangle
+  WOPose.camHandler._addVideoConfig = {
+    width: widthRealVideo,
+    height: heightRealVideo,
+  };
+
   const resizeHandler = () => {
     widthResult = window.innerWidth > 1280 ? 1280 : window.innerWidth;
     heightResult = Math.floor(widthResult * (ratio.h / ratio.w));
@@ -111,13 +117,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         element.style.height = `${heightResult}px`;
       }
     }
-
-    // Constraint settings for webcam
-    // eslint-disable-next-line no-underscore-dangle
-    WOPose.camHandler._addVideoConfig = {
-      width: widthRealVideo,
-      height: heightRealVideo,
-    };
 
     WOPose.scaler = {
       w: widthResult / widthRealVideo,
@@ -298,7 +297,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         // Setup and load classifier (tfjs model)
         await WOPose.classifier
-          .setup(data.classifierConfig)
+          .setup(data.classifierConfig, {
+            width: widthRealVideo,
+            height: heightRealVideo,
+          })
           .then(async () => {
             console.log("Classifier Ready to Use");
             chooseWOElem.style.display = "none";
@@ -909,14 +911,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         webcamElem.pause();
         WOPose.counter.lastStage = {};
         WOPose.counter.nextStage = {};
-        heightRealVideo = newWebcamElem.videoHeight;
-        widthRealVideo = newWebcamElem.videoWidth;
         if (widthRealVideo !== 0 && WOPose.isVideoMode) {
-          WOPose.scaler = {
-            w: widthResult / widthRealVideo,
-            h: heightResult / heightRealVideo,
-          };
+          heightRealVideo = newWebcamElem.videoHeight;
+          widthRealVideo = newWebcamElem.videoWidth;
         }
+        WOPose.scaler = {
+          w: widthResult / widthRealVideo,
+          h: heightResult / heightRealVideo,
+        };
+        WOPose.classifier.stdConfig = {
+          width: widthRealVideo,
+          height: heightRealVideo,
+        };
         resumeBtnElem.style.display = "flex";
         restartBtnElem.style.display = "none";
         pauseBtnElem.style.display = "none";
@@ -940,6 +946,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   goWebcamBtnElem.addEventListener("click", async (event) => {
     event.preventDefault();
     if (!WOPose.isVideoMode) return;
+    widthRealVideo = 640;
+    heightRealVideo = 360;
+    // Constraint settings for webcam
+    // eslint-disable-next-line no-underscore-dangle
+    WOPose.camHandler._addVideoConfig = {
+      width: widthRealVideo,
+      height: heightRealVideo,
+    };
+    WOPose.classifier.stdConfig = {
+      width: widthRealVideo,
+      height: heightRealVideo,
+    };
     WOPose.isLoop = false;
     sliderCameraElem.checked = true;
     WOPose.isVideoMode = false;

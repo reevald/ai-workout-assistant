@@ -4,10 +4,44 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#4b5563">
+    <!-- Primary Meta Tags -->
+    <title>AI Workout Assistant with Pose Detection and Repetitions Counter</title>
+    <meta name="title" content="AI Workout Assistant with Pose Detection and Repetitions Counter">
+    <meta name="description" content="AI-based web application with pose detection, pose classification, and repetitions counter to help everyone do Workout like push up or squats whenever and wherever.">
+    <meta name="keywords" content="Pose Detection, Pose Classification, Workout Counter, Workout Tracking, Artificial Intelligence">
+    <meta name="author" content="Mochammad Galang Rivaldo">
+    <meta name="robots" content="index, follow">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://aiworkout.live/">
+    <meta property="og:title" content="AI Workout Assistant with Pose Detection and Repetitions Counter">
+    <meta property="og:description" content="AI-based web application with pose detection, pose classification, and repetitions counter to help everyone do Workout like push up or squats whenever and wherever.">
+    <meta property="og:image" content="./img/social-media-thumbnail.png">
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://aiworkout.live/">
+    <meta property="twitter:title" content="AI Workout Assistant with Pose Detection and Repetitions Counter">
+    <meta property="twitter:description" content="AI-based web application with pose detection, pose classification, and repetitions counter to help everyone do Workout like push up or squats whenever and wherever.">
+    <meta property="twitter:image" content="./img/social-media-thumbnail.png">
     <link rel="stylesheet" href="./stylesheets/output.css" />
     <link rel="stylesheet" href="./stylesheets/custom.css" />
     <link rel="icon" type="image/x-icon" href="./img/favicon.svg" />
     <title>AI Workout Assistant</title>
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-D1TD93SJGB"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-D1TD93SJGB");
+    </script>
   </head>
   <body>
     <!-- Wrapper Choose Workout -->
@@ -208,8 +242,8 @@
     <div
       id="helpBox"
       class="flex flex-row justify-center h-screen items-center bg-gray-700/50 absolute w-full z-40"
-      style="display: none;"
-      >
+      style="display: none"
+    >
       <div
         class="flex flex-col items-center w-full max-h-96 h-full max-w-xs bg-white rounded-lg shadow-md overflow-hidden text-gray-600 max-h-screen"
       >
@@ -231,32 +265,70 @@
           id="bodyHowToUseBox"
           class="w-full p-3 flex-1 overflow-y-auto h-full text-sm font-medium flex flex-col items-center text-justify text-gray-600"
         >
-          <p class="mb-3">Choose the type of workout and duration via the settings menu.</p>
-          <img class="w-1/3 mb-3" src="./img/undraw_choose_re_7d5a.svg" alt="Choose Workout and Duration">
           <p class="mb-3">
-            Press start button to start, and immediately prepare yourself to
-            do the workout.
-          </p class="mb-3">
-          <img class="w-1/3 mb-3" src="./img/undraw_press_play_re_85bj.svg" alt="Press Start">
+            Choose the type of workout and duration via the settings menu.
+          </p>
+          <img
+            class="w-1/3 mb-3"
+            src="./img/undraw_choose_re_7d5a.svg"
+            alt="Choose Workout and Duration"
+          />
+          <p class="mb-3">
+            Press start button to start, and immediately prepare yourself to do
+            the workout.
+          </p>
+          <img
+            class="w-1/3 mb-3"
+            src="./img/undraw_press_play_re_85bj.svg"
+            alt="Press Start"
+          />
           <p class="mb-3">
             Try to get optimal score (repetition) with proper technique and
             enjoy!
           </p>
-          <img class="w-1/3 mb-2" src="./img/undraw_workout_gcgu.svg" alt="Doing Workout">
+          <img
+            class="w-1/3 mb-2"
+            src="./img/undraw_workout_gcgu.svg"
+            alt="Doing Workout"
+          />
         </div>
         <div
           id="bodyAboutBox"
           class="w-full p-3 flex-1 overflow-y-auto h-full text-xs font-medium flex flex-col items-center text-justify text-gray-600"
-          style="display: none;"
+          style="display: none"
         >
           <h1 class="text-sm mb-1.5">AI Workout Assistant</h1>
-          <p class="mb-3">An web application to help everyone do workout wherever and whenever. Supported by the pose detector feature to analyze every pose and auto count the number of repetitions made. So, let's create a healthy life by do workout every day!</p>
+          <p class="mb-3">
+            An web application to help everyone do workout wherever and
+            whenever. Supported by the pose detector feature to analyze every
+            pose and auto count the number of repetitions made. So, let's create
+            a healthy life by do workout every day!
+          </p>
           <h1 class="text-sm mb-1.5">How it Work?</h1>
-          <p class="mb-3">Image data which is obtained from video or webcam will be processed by pose detector using the MoveNet model to generate keypoints. Keypoints are used for repetition calculations and input for classifying workout types with Dense Neural Network (DNN) model.</p>
+          <p class="mb-3">
+            Image data which is obtained from video or webcam will be processed
+            by pose detector using the MoveNet model to generate keypoints.
+            Keypoints are used for repetition calculations and input for
+            classifying workout types with Dense Neural Network (DNN) model.
+          </p>
           <h1 class="text-sm mb-1.5">Privacy Protection</h1>
-          <p class="mb-3">Pose Detector and Classification in the AI Workout Assistant application fully runs on the Client side, so no image data comes out of the user's device. Videos or images processed by the program will be automatically deleted.</p>
+          <p class="mb-3">
+            Pose Detector and Classification in the AI Workout Assistant
+            application fully runs on the Client side, so no image data comes
+            out of the user's device. Videos or images processed by the program
+            will be automatically deleted.
+          </p>
           <h1 class="text-sm mb-1.5">Learn More</h1>
-          <p class="mb-3 text-left w-full">Open Source: <a href="https://github.com/reevald/ai-workout-assistant/" target="_blank" rel="noopener noreferrer" class="text-amber-600 underline">https://github.com/reevald/ai-workout-assistant/</a></p>
+          <p class="mb-3 text-left w-full">
+            Open Source:
+            <a
+              href="https://github.com/reevald/ai-workout-assistant/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-amber-600 underline"
+              >https://github.com/reevald/ai-workout-assistant/</a
+            >
+          </p>
         </div>
         <div
           class="flex flex-row justify-center items-center border-t-2 py-2 w-full"
@@ -410,7 +482,7 @@
                   <label
                     id="goAdviceBtn"
                     for="sliderAdviceBox"
-                    class="cursor-pointer flex flex-row items-center bg-white text-sm font-bold text-gray-500 py-0.5 px-2 rounded-lg mb-2"
+                    class="cursor-pointer hover:bg-gray-200 flex flex-row items-center bg-white text-sm font-bold text-gray-500 py-0.5 px-2 rounded-lg mb-2"
                   >
                     <div>Advice</div>
                     <div class="switch dev-switch">
@@ -426,7 +498,7 @@
                   <label
                     id="goWebcamBtn"
                     for="sliderCameraBox"
-                    class="cursor-pointer flex flex-row items-center bg-white text-sm font-bold text-gray-500 py-0.5 px-2 rounded-lg mb-2"
+                    class="cursor-pointer hover:bg-gray-200 flex flex-row items-center bg-white text-sm font-bold text-gray-500 py-0.5 px-2 rounded-lg mb-2"
                   >
                     <div>Camera</div>
                     <div class="switch dev-switch">
@@ -440,7 +512,7 @@
                   </label>
                   <label
                     for="uploadVideoBtn"
-                    class="cursor-pointer bg-white text-sm font-bold text-gray-500 py-0.5 px-2 rounded-lg mb-2"
+                    class="cursor-pointer hover:bg-gray-200 bg-white text-sm font-bold text-gray-500 py-0.5 px-2 rounded-lg mb-2"
                   >
                     <input
                       type="file"
@@ -452,7 +524,7 @@
                   </label>
                   <div
                     id="recordKeypointsBtn"
-                    class="cursor-pointer flex flex-row items-center bg-white text-sm font-bold text-gray-500 py-0.5 px-2 rounded-lg"
+                    class="cursor-pointer hover:bg-gray-200 flex flex-row items-center bg-white text-sm font-bold text-gray-500 py-0.5 px-2 rounded-lg"
                   >
                     <div
                       id="pingRecordBox"
@@ -480,7 +552,7 @@
             <div class="flex flex-row items-center">
               <div
                 id="restartBtn"
-                class="cursor-pointer w-12 h-12 mr-3 flex flex-row justify-center items-center rounded-full bg-white"
+                class="cursor-pointer hover:bg-gray-200 w-12 h-12 mr-3 flex flex-row justify-center items-center rounded-full bg-white"
                 style="display: none"
               >
                 <svg
@@ -515,7 +587,7 @@
                 </div>
                 <div
                   id="pauseBtn"
-                  class="w-24 h-24 flex flex-row justify-center items-center rounded-full bg-white"
+                  class="cursor-pointer hover:bg-gray-200 w-24 h-24 flex flex-row justify-center items-center rounded-full bg-white"
                   style="display: none"
                 >
                   <svg

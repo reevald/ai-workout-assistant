@@ -6,11 +6,7 @@
   },
   "classifierConfig": {
     "path": "./tfjs-model/squat/model.json",
-    "label": ["Other", "Squat"],
-    "stdConfig": {
-      "width": 640,
-      "height": 360
-    }
+    "label": ["Other", "Squat"]
   },
   "rulesCountConfig": {
     "nameWorkout": "Squat",

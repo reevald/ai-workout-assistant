@@ -6,11 +6,7 @@
   },
   "classifierConfig": {
     "path": "./tfjs-model/push-up/model.json",
-    "label": ["Other", "Push Up"],
-    "stdConfig": {
-      "width": 640,
-      "height": 360
-    }
+    "label": ["Other", "Push Up"]
   },
   "rulesCountConfig": {
     "nameWorkout": "Push Up",

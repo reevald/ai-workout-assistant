@@ -12,6 +12,7 @@
     "nameWorkout": "Squat",
     "nameStage": ["Up", "Down"],
     "pathImageStage": ["./img/iconmonstr-caret-up-circle-filled-64.png", "./img/iconmonstr-caret-down-circle-filled-64.png"],
+    "pathAudioStage": ["./audio/go-up-from-google-translate.webm", "./audio/go-down-from-google-translate.webm"],
     "anglePoint": {
       "11": {
         "spouseIdx": [13, 5],

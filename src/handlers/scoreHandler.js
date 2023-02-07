@@ -12,7 +12,7 @@ export default class ScoreHandler {
     bestScoreConfig.nameWorkout.forEach((workout) => {
       this.bestScore[workout] = {};
       bestScoreConfig.duration.forEach((dur) => {
-        this.bestScore[workout][dur] = "0";
+        this.bestScore[workout][dur] = 0;
       });
     });
 
@@ -54,7 +54,7 @@ export default class ScoreHandler {
     // Search maximum score with compare each other
     this.DBWOScore.forEach((dataWO) => {
       if (
-        this.bestScore[dataWO.nameWorkout][dataWO.duration] === "None" ||
+        this.bestScore[dataWO.nameWorkout][dataWO.duration] === 0 ||
         dataWO.repetition >= this.bestScore[dataWO.nameWorkout][dataWO.duration]
       ) {
         this.bestScore[dataWO.nameWorkout][dataWO.duration] = dataWO.repetition;

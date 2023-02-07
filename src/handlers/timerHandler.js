@@ -1,3 +1,5 @@
+import AudioHandler from "./audioHandler";
+
 export default class TimerHandler {
   constructor() {
     this.currTime = 0; // in second
@@ -10,6 +12,23 @@ export default class TimerHandler {
     this.firstDelayDuration = null;
     this.currDelayTime = 0; // Count down
     this.isFirstDelay = true;
+    this.isPlayAudTimer = true;
+    this.audStart = new AudioHandler({
+      src: "./audio/start-from-google-translate.webm",
+    });
+    this.audDone = new AudioHandler({
+      src: "./audio/done-from-freesound.webm",
+    });
+    this.listAudCounts = [
+      new AudioHandler({ src: "./audio/one-from-google-translate.webm" }),
+      new AudioHandler({ src: "./audio/two-from-google-translate.webm" }),
+      new AudioHandler({ src: "./audio/three-from-google-translate.webm" }),
+    ];
+    this.audStart.setup();
+    this.audDone.setup();
+    this.listAudCounts.forEach((audCount) => {
+      audCount.setup();
+    });
   }
 
   setup = (timerConfig) => {
@@ -33,6 +52,13 @@ export default class TimerHandler {
     this.runner = setInterval(() => {
       if (!this.isPaused) {
         if (this.isFirstDelay) {
+          if (
+            this.isPlayAudTimer &&
+            this.currDelayTime !== 0 &&
+            this.listAudCounts[this.currDelayTime - 1].isLoaded
+          ) {
+            this.listAudCounts[this.currDelayTime - 1].play();
+          }
           delayCB(this.currDelayTime);
           if (this.currDelayTime === 0) {
             finishDelayCB();
@@ -41,6 +67,13 @@ export default class TimerHandler {
           }
           this.currDelayTime -= 1;
         } else {
+          if (
+            this.isPlayAudTimer &&
+            this.audStart.isLoaded &&
+            Math.abs(this.currTime - this.targetTime) === this.duration
+          ) {
+            this.audStart.play();
+          }
           if (this.type === "INC") {
             this.currTime += 1;
           }
@@ -49,6 +82,9 @@ export default class TimerHandler {
           }
           timerCB(this.getCurrTime());
           if (this.currTime === this.targetTime) {
+            if (this.isPlayAudTimer && this.audDone.isLoaded) {
+              this.audDone.play();
+            }
             finishTimerCB();
             this.isPaused = false;
             this.remove();

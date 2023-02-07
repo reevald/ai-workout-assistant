@@ -4,30 +4,52 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#4b5563">
+    <meta name="theme-color" content="#4b5563" />
     <!-- Primary Meta Tags -->
-    <title>AI Workout Assistant with Pose Detection and Repetitions Counter</title>
-    <meta name="title" content="AI Workout Assistant with Pose Detection and Repetitions Counter">
-    <meta name="description" content="AI-based web application with pose detection, pose classification, and repetitions counter to help everyone do Workout like push up or squats whenever and wherever.">
-    <meta name="keywords" content="Pose Detection, Pose Classification, Workout Counter, Workout Tracking, Artificial Intelligence">
-    <meta name="author" content="Mochammad Galang Rivaldo">
-    <meta name="robots" content="index, follow">
+    <title>
+      AI Workout Assistant with Pose Detection and Repetitions Counter
+    </title>
+    <meta
+      name="title"
+      content="AI Workout Assistant with Pose Detection and Repetitions Counter"
+    />
+    <meta
+      name="description"
+      content="AI-based web application with pose detection, pose classification, and repetitions counter to help everyone do Workout like push up or squats whenever and wherever."
+    />
+    <meta
+      name="keywords"
+      content="Pose Detection, Pose Classification, Workout Counter, Workout Tracking, Artificial Intelligence"
+    />
+    <meta name="author" content="Mochammad Galang Rivaldo" />
+    <meta name="robots" content="index, follow" />
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://aiworkout.live/">
-    <meta property="og:title" content="AI Workout Assistant with Pose Detection and Repetitions Counter">
-    <meta property="og:description" content="AI-based web application with pose detection, pose classification, and repetitions counter to help everyone do Workout like push up or squats whenever and wherever.">
-    <meta property="og:image" content="./img/social-media-thumbnail.png">
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://aiworkout.live/" />
+    <meta
+      property="og:title"
+      content="AI Workout Assistant with Pose Detection and Repetitions Counter"
+    />
+    <meta
+      property="og:description"
+      content="AI-based web application with pose detection, pose classification, and repetitions counter to help everyone do Workout like push up or squats whenever and wherever."
+    />
+    <meta property="og:image" content="./img/social-media-thumbnail.png" />
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://aiworkout.live/">
-    <meta property="twitter:title" content="AI Workout Assistant with Pose Detection and Repetitions Counter">
-    <meta property="twitter:description" content="AI-based web application with pose detection, pose classification, and repetitions counter to help everyone do Workout like push up or squats whenever and wherever.">
-    <meta property="twitter:image" content="./img/social-media-thumbnail.png">
-    <link rel="stylesheet" href="./stylesheets/output.css" />
-    <link rel="stylesheet" href="./stylesheets/custom.css" />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://aiworkout.live/" />
+    <meta
+      property="twitter:title"
+      content="AI Workout Assistant with Pose Detection and Repetitions Counter"
+    />
+    <meta
+      property="twitter:description"
+      content="AI-based web application with pose detection, pose classification, and repetitions counter to help everyone do Workout like push up or squats whenever and wherever."
+    />
+    <meta property="twitter:image" content="./img/social-media-thumbnail.png" />
+    <link rel="stylesheet" href="./stylesheets/output.css?v=1.0.1" />
+    <link rel="stylesheet" href="./stylesheets/custom.css?v=1.0.1" />
     <link rel="icon" type="image/x-icon" href="./img/favicon.svg" />
-    <title>AI Workout Assistant</title>
     <!-- Google tag (gtag.js) -->
     <script
       async
@@ -125,6 +147,20 @@
           class="w-full p-3 flex-1 overflow-y-auto h-full"
           style="display: none"
         >
+          <div class="mb-3 w-full flex flex-row justify-between items-center">
+            <div>Audio Effect</div>
+            <div>
+              <label class="switch">
+                <input
+                  type="checkbox"
+                  id="audioEffectBox"
+                  name="settingsAEBox"
+                  checked
+                />
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
           <div class="mb-3 w-full flex flex-row justify-between items-center">
             <div>Full Screen</div>
             <div>
@@ -266,7 +302,8 @@
           class="w-full p-3 flex-1 overflow-y-auto h-full text-sm font-medium flex flex-col items-center text-justify text-gray-600"
         >
           <p class="mb-3">
-            Choose the type of workout and duration via the settings menu.
+            Choose the type of workout and duration, you can change these later
+            via the settings menu.
           </p>
           <img
             class="w-1/3 mb-3"
@@ -419,13 +456,7 @@
               </div>
             </div>
             <div class="relative h-full w-full flex flex-col justify-center">
-              <img
-                id="imgDirectionSignBox"
-                class="animate-bounce"
-                style="width: 56px; display: none"
-                src="./img/iconmonstr-caret-down-circle-filled-64.png"
-                alt="Direction Sign"
-              />
+              <div id="imgDirectionSignBox"></div>
               <div
                 id="adviceWrapBox"
                 style="display: none"

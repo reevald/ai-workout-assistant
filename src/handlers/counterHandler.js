@@ -1,3 +1,5 @@
+import AudioHandler from "./audioHandler";
+
 export default class CounterHandler {
   constructor(ctxPose) {
     this.count = 0;
@@ -9,6 +11,13 @@ export default class CounterHandler {
     this.sumObsPoints = 0;
     this.obsStages = [];
     this.listAngles = [];
+    this.isNewAssetsImgStages = false;
+    this.isPlayAudStage = true;
+    this.listAudStages = {};
+    this.audCount = new AudioHandler({
+      src: "./audio/count-from-pixabay.webm",
+    });
+    this.audCount.setup();
   }
 
   initStage = () => {
@@ -33,7 +42,14 @@ export default class CounterHandler {
 
   setup = (rulesConfig) => {
     this.rules = rulesConfig;
+    this.isNewAssetsImgStages = true;
     this.initStage();
+    this.rules.nameStage.forEach((stage, idx) => {
+      this.listAudStages[stage] = new AudioHandler({
+        src: this.rules.pathAudioStage[idx],
+      });
+      this.listAudStages[stage].setup();
+    });
   };
 
   resetCount = () => {
@@ -57,6 +73,9 @@ export default class CounterHandler {
         this.currStage.idStage === this.rules.nameStage.length - 1
       ) {
         this.count += 1;
+        if (this.isPlayAudStage && this.audCount.isLoaded) {
+          this.audCount.play();
+        }
       }
       if (
         statusStage === "FULL" &&

@@ -140,13 +140,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       <div class="mb-3">What workout do you want?</div>
       `
       : `
-      <div class="flex-1 overflow-y-auto flex flex-col items-center">
+      <div class="flex-1 overflow-y-auto flex flex-col items-center w-full">
         <h1 class="font-bold text-2xl mt-3 mb-5">AI Workout Assistant</h1>
-        <img
-          src="./img/undraw_pilates_gpdb.svg"
-          alt="Ilustration of Workout"
-          class="w-1/2"
-        />
+        <div class="relative w-full flex flex-row justify-center items-center">
+          <img
+            src="./img/undraw_pilates_gpdb.svg"
+            alt="Ilustration of Workout"
+            class="w-1/2"
+          />
+          <div id="chooseHelpBtn" class="absolute top-0 bg-yellow-500 text-white font-bold py-1 px-2 rounded-lg cursor-pointer hover:bg-amber-500">Need Help ?</div>
+        </div>
         <div class="mt-5 mb-3">What workout do you want?</div>
       `;
 
@@ -275,6 +278,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         resultTitleElem.innerText = title;
 
         // Setup timer to first play
+        WOTimer.remove();
         WOTimer.setup({
           interval: 1000,
           duration: WOPose.isVideoMode
@@ -547,14 +551,26 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.querySelector(
       `input[value="${WOSettings.DBWOSettings.currDuration}"][name="settingsDurationWO"]`
     ).checked = true;
+    document.querySelector('input[name="settingsAEBox"]').checked =
+      WOSettings.DBWOSettings.isAudioEffect !== undefined
+        ? WOSettings.DBWOSettings.isAudioEffect
+        : true; // Default setting Audio Effect
     document.querySelector('input[name="settingsFSBox"]').checked =
-      WOSettings.DBWOSettings.isFullscreen;
+      WOSettings.DBWOSettings.isFullscreen !== undefined
+        ? WOSettings.DBWOSettings.isFullscreen
+        : false; // Default setting Full Screen
     document.querySelector('input[name="settingsFCBox"]').checked =
-      WOSettings.DBWOSettings.isFlipCamera;
+      WOSettings.DBWOSettings.isFlipCamera !== undefined
+        ? WOSettings.DBWOSettings.isFlipCamera
+        : false; // Default setting Flip Camera
     document.querySelector('input[name="settingsDSBox"]').checked =
-      WOSettings.DBWOSettings.isDirectionSign;
+      WOSettings.DBWOSettings.isDirectionSign !== undefined
+        ? WOSettings.DBWOSettings.isDirectionSign
+        : true; // Default setting Direction Sign
     document.querySelector('input[name="settingsDMBox"]').checked =
-      WOSettings.DBWOSettings.isDeveloperMode;
+      WOSettings.DBWOSettings.isDeveloperMode !== undefined
+        ? WOSettings.DBWOSettings.isDeveloperMode
+        : false; // Default setting Developer Mode
   });
 
   const actionSettings = {
@@ -602,6 +618,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       pauseBtnElem.style.display = "none";
       loaderElem.style.display = "none";
     },
+    isAudioEffect: (data) => {
+      WOPose.counter.isPlayAudStage = data;
+      WOTimer.isPlayAudTimer = data;
+    },
     isFullscreen: (data) => {
       if (data && !document.fullscreenElement) {
         document.documentElement.requestFullscreen();
@@ -614,8 +634,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     },
     isFlipCamera: (data) => {
-      // Default (user for webcam) and auto change to "enviroment" if video
-      const facingMode = data ? "enviroment" : "user";
+      // Default (user for webcam) and auto change to "environment" if video
+      const facingMode = data ? "environment" : "user";
       WOPose.camHandler.flip(facingMode);
     },
     isDirectionSign: (data) => {
@@ -639,6 +659,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     const currDuration = document.querySelector(
       'input[name="settingsDurationWO"]:checked'
     ).value;
+    const isAudioEffect = document.querySelector(
+      'input[name="settingsAEBox"]'
+    ).checked;
     const isFullscreen = document.querySelector(
       'input[name="settingsFSBox"]'
     ).checked;
@@ -657,6 +680,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       {
         currWorkout,
         currDuration,
+        isAudioEffect,
         isFullscreen,
         isFlipCamera,
         isDirectionSign,
@@ -683,6 +707,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       .then(async (data) => {
         formChooseWOElem.innerHTML = getHTMLChooseWO(data, false);
         bodySettingsWOElem.innerHTML = getHTMLChooseWO(data, true);
+        document
+          .getElementById("chooseHelpBtn")
+          .addEventListener("click", () => {
+            helpElem.style.display = "flex";
+          });
         // Init and try to load localStorage data scores
         WOScore.setup(data);
         // Init and try to load localStorage data settings
@@ -842,6 +871,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     WOPose.isLoop = true;
     webcamElem.play().then(() => {
       if (!isWebcamSecPlay && firstPlay && !WOPose.isVideoMode) {
+        console.log("It run?");
         isWebcamSecPlay = true;
         // Return to stop redraw again (first play)
         return;
@@ -879,8 +909,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       );
       newWebcamElem.load();
       newWebcamElem.play();
-      // When first time upload video, the facingMode is always "enviroment"
-      // So we need to flip true ("enviroment" mode) to draw canvas properly
+      // When first time upload video, the facingMode is always "environment"
+      // So we need to flip true ("environment" mode) to draw canvas properly
       WOSettings.change(
         { isFlipCamera: true },
         { isFlipCamera: actionSettings.isFlipCamera }
@@ -959,6 +989,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       height: heightRealVideo,
     };
     WOPose.isLoop = false;
+    isWebcamSecPlay = true;
     sliderCameraElem.checked = true;
     WOPose.isVideoMode = false;
     await WOPose.camHandler.start();

@@ -9,7 +9,7 @@
 export default class WebcamHandler {
   constructor(
     webcamElement,
-    facingMode = "user" // enviroment or user
+    facingMode = "user" // environment or user
   ) {
     this._webcamElement = webcamElement;
     this._addVideoConfig = {};
@@ -78,7 +78,7 @@ export default class WebcamHandler {
       if (
         (this._facingMode === "user" &&
           webcam.label.toLowerCase().includes("front")) ||
-        (this._facingMode === "enviroment" &&
+        (this._facingMode === "environment" &&
           webcam.label.toLowerCase().includes("back"))
       ) {
         this._selectedDeviceId = webcam.deviceId;
@@ -89,7 +89,7 @@ export default class WebcamHandler {
 
   /* Change Facing mode and selected camera */
   flip(mode) {
-    // this._facingMode = this._facingMode === "user" ? "enviroment" : "user";
+    // this._facingMode = this._facingMode === "user" ? "environment" : "user";
     this._facingMode = mode;
     // this._webcamElement.style.transform = "";
     if (this._facingMode === "user") {

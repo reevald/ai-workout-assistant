@@ -80,6 +80,7 @@ export default class PoseHandler {
     this.counter = new CounterHandler(this.ctxPose);
     this.isShowAdvice = false;
     this.isShowDirectionSign = true;
+    this.tmpStage = "";
   }
 
   setup = async (poseDetectorConfig) => {
@@ -198,14 +199,40 @@ export default class PoseHandler {
         if (
           this.isShowDirectionSign &&
           this.additionalElem.imgDirectionSignElem &&
-          Object.keys(this.counter.nextStage).length !== 0
+          Object.keys(this.counter.nextStage).length !== 0 &&
+          this.tmpStage !== this.counter.nextStage.nameStage
         ) {
+          this.tmpStage = this.counter.nextStage.nameStage;
+          if (this.counter.isNewAssetsImgStages) {
+            this.counter.isNewAssetsImgStages = false;
+            let htmlImgStages = "";
+            this.counter.rules.pathImageStage.forEach((path) => {
+              htmlImgStages += `<img
+                class="animate-bounce"
+                style="width: 56px; display: none"
+                src="${path}"
+                alt="Direction Sign"
+              />`;
+            });
+            this.additionalElem.imgDirectionSignElem.innerHTML = htmlImgStages;
+          }
           this.additionalElem.imgDirectionSignElem.style.display = this.counter
             .nextStage.nameStage
             ? "block"
             : "none";
-          this.additionalElem.imgDirectionSignElem.src =
-            this.counter.rules.pathImageStage[this.counter.nextStage.idStage];
+          this.additionalElem.imgDirectionSignElem.children[
+            this.counter.lastStage.idStage
+          ].style.display = "none";
+          this.additionalElem.imgDirectionSignElem.children[
+            this.counter.nextStage.idStage
+          ].style.display = "block";
+          if (
+            this.counter.isPlayAudStage &&
+            this.counter.listAudStages[this.counter.nextStage.nameStage]
+              .isLoaded
+          ) {
+            this.counter.listAudStages[this.counter.nextStage.nameStage].play();
+          }
         }
         // Show advices
         if (this.isShowAdvice && this.additionalElem.adviceWrapElem) {

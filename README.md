@@ -1,3 +1,5 @@
+# THIS IS FORK FOR RESEARCH ONLY
+
 ![example workflow](https://github.com/reevald/ai-workout-assistant/actions/workflows/azure-static-web-apps-agreeable-stone-079552c10.yml/badge.svg)
 # AI Workout Assistant
 An web application to help everyone do workout wherever and whenever. Supported by the pose detector feature to analyze every pose and auto count the number of repetitions made. So, let's create a healthy life by do workout every day!
